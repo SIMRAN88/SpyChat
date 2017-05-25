@@ -23,6 +23,8 @@ if spy_name_length > 0:
     spy_name = spy_salutation + " " + spy_name
     print "Alright, " + spy_name + " We need some more information."
 
+
+
 else:
     print("Please enter your name and run the program again.")
 
