@@ -1,28 +1,22 @@
-from spy_details import spy_name, spy_salutation, spy_rating, spy_age, spy_is_online
+from spy_details import spy
 
 # Let's start by greeting.
-print "Hello!"
+print"Hello!"
 
 # How to use escape sequences
 print "Let\'s get started!"
 
 # Ask the spy whether he wants to continue with the default spy or create a new user
-question = "Do you want to continue as" + spy_salutation + " " + spy_name + "Y/N ?"
+question = "Do you want to continue as" + spy['salutation'] + " " + spy['name'] + "Y/N ?"
 existing = raw_input(question)
 
 # add a status message
-STATUS_MESSAGES = ['My name is Bond, James Bond', 'Shaken, not stirred',"Live and Let Die","Diamonds are forever"]
+STATUS_MESSAGES = ['My name is Bond, James Bond', 'Shaken, not stirred', "Live and Let Die", "Diamonds are forever"]
 
-# list to store the name of friends
-friends_name = []
-# list to store the age of friends
-friends_age = []
-# list to store the rating of friends
-friends_rating = []
-# list to store whether the friend is online or not
-friends_is_online = []
+# friend list to store name,age,rating an is_online
+friends = []
 
-
+#
 def add_status(current_status_message):
     updated_status_message = None
 
@@ -37,12 +31,11 @@ def add_status(current_status_message):
 
     # .upper() converts from any case to upper case
     if default.upper() == "N":
+        new_status_message =  raw_input("What status message do you want to see?")
 
-        item_position = 1
-
-        for message in STATUS_MESSAGES:
-            print '%d. %s' % (item_position, message)
-            item_position = item_position + 1
+        if len(new_status_message) > 0:
+            STATUS_MESSAGES.append(new_status_message)
+            updated_status_message = new_status_message
 
     elif default.upper() == 'Y':
 
@@ -54,14 +47,15 @@ def add_status(current_status_message):
 
         message_selection = int(raw_input("\nChoose from the above status"))
 
+        # Check if the position exists and then only set it
         if len(STATUS_MESSAGES) >= message_selection:
             updated_status_message = STATUS_MESSAGES[message_selection - 1]
 
     else:
         print 'The option you chose is not valid! Press either y or n.'
 
-    if updated_status_message:
-        print 'Your updated status message is: %s' % updated_status_message
+    if current_status_message:
+        print 'Your updated status message is: %s' % current_status_message
     else:
         print 'You did not update your status message'
 
@@ -70,120 +64,156 @@ def add_status(current_status_message):
 
 # function to add a friend to this chat
 def add_friend():
-    new_name = raw_input("Please add your friend's name: ")
-    new_salutation = raw_input("Are they Mr. or Ms.?: ")
+    # using a dictionary to add a friend details
+    new_friend = {
+        'name': ' ',
+        'salutation': ' ',
+        'age': 0,
+        'rating': 0.0
+    }
+    new_friend['name'] = raw_input("Please add your friend's name: ")
+    new_friend['salutation'] = raw_input("Are they Mr. or Ms.?: ")
 
-    new_name = new_name + " " + new_salutation
+    new_friend['name'] = new_friend['name'] + " " + new_friend['salutation']
 
-    new_age = raw_input("Age?")
-    new_age = int(new_age)
+    new_friend['age'] = raw_input("Age?")
+    new_friend['age'] = int(new_friend['age'])
 
-    new_rating = raw_input("Spy rating?")
-    new_rating = float(new_rating)
+    new_friend['rating'] = raw_input("Spy rating?")
+    new_friend['rating'] = float(new_friend['rating'])
 
-    if len(new_name) > 0 and new_age > 12 and new_rating >= spy_rating:
-        friends_name.append(new_name)
-        friends_age.append(new_age)
-        friends_rating.append(new_rating)
-        friends_is_online.append(True)
+    # Add a friend of correct age and equal or higher rating
+    if len(new_friend['name']) > 0 and 12 < new_friend['age'] < 50 and new_friend['rating'] >= spy['rating']:
+        friends.append(new_friend)
         print 'Friend Added!'
     else:
-        print 'Sorry! Invalid entry. We can\'t add spy with the details you provided'
+        # age is less than 12
+        if new_friend['age'] < 12:
+            print("Sorry , the friend is too young to become a spy!")
+        # age is greater than equal to 50
+        elif new_friend['age'] >= 50:
+            print("Sorry , the friend is too old to be a spy!")
 
-    return len(friends_name)
 
 
-def start_chat(spy_name, spy_age, spy_rating):
+    return len(friends)
+
+def select_friend():
+    item_number = 0
+
+    for friend in friends:
+        print '%d. %s aged %d with rating %.2f is online' %(item_number +1,friend['name'],friend['age'],friend['rating'])
+
+        item_number = item_number + 1
+
+    friend_choice = raw_input("Choose from your friends")
+
+    friend_choice_position = int(friend_choice) - 1
+
+    return friend_choice_position
+
+
+def start_chat(spy):
     current_status_message = None
 
     # updated variable
-    spy_name = spy_salutation + " " + spy_name
+    spy['name'] = spy['salutation'] + " " + spy['name']
+    # Age cannot be less than 12 or greater than 50
+    if 12 < spy['age'] < 50:
 
-    if spy_age > 12 and spy_age < 50:
-        print "Authentication complete. Welcome " + spy_name + " age: " + str(spy_age) + " and rating of: " + str(
-            spy_rating) + " Proud to have you onboard"
+        # Authentication complete
+        # Show a message with all te spy details
+        print "Authentication complete. Welcome " + spy['name'] + " age: " + str(spy['age']) + " and rating of: " + str(
+            spy['rating']) + " Proud to have you on board"
+
+        # Can be done in this way also print "Authentication complete. Welcome %s, age: %d and rating of: %.2f.Proud
+        # to have you on board" % (spy_name, spy_age, spy_rating)
 
         show_menu = True
         while show_menu:
-            menu_choices = "What do you want to do? \n 1. Add a status update \n 2. Add a friend \n 3. Send a secret message \n 4. Read a secret message \n 5. Read Chats from a user \n 6. Close Application \n"
+            menu_choices = "What do you want to do? \n 1. Add a status update \n" \
+                           " 2. Add a friend \n 3. Send a secret message \n " \
+                           "4. Read a secret message \n 5. Read Chats from a user \n" \
+                           " 6. Close Application \n"
             menu_choice = raw_input(menu_choices)
 
             if len(menu_choice) > 0:
                 menu_choice = int(menu_choice)
 
+                # set a status
                 if menu_choice == 1:
                     current_status_message = add_status(current_status_message)
+                # add a friend
                 elif menu_choice == 2:
                     number_of_friends = add_friend()
                     print 'You have %d friends' % (number_of_friends)
+                # select from a friend to chat with
+                elif menu_choice == 3:
+                    index = select_friend()
+                    print index
                 else:
                     show_menu = False
+
     else:
-        print("you are not of the correct age to be a spy")
+        # age is less than 12
+        if spy['age'] < 12:
+            print("Sorry , you are too young to become a spy!")
+        # age is greater than equal to 50
+        elif spy['age'] >= 50:
+            print("Sorry , you are too old to be a spy!")
+
 
 # if the user chooses the default spy
 if existing.upper() == "Y":
     # start the chat function is called
-    start_chat(spy_name, spy_age, spy_rating)
+    start_chat(spy)
 # the user wants to add a new user
 elif existing.upper() == "N":
-    # declare variables
-    spy_name = " "
-    spy_salutation = " "
-    spy_age = 0
-    spy_rating = 0.0
-    spy_is_online = False
+    # declare variables using a dictionary
+    spy = {
+        'name': '',
+        'salutation': '',
+        'age': 0,
+        'rating': 0.0,
+        'is_online': False
+    }
 
     # Ask for the name
-    spy_name = raw_input("Welcome to spy chat, you must tell me your spy name first: ")
+    spy['name'] = raw_input("Welcome to spy chat, you must tell me your spy name first: ")
 
     # Check if the name is entered or not
-    if len(spy_name) > 0:
+    if len(spy['name']) > 0:
         # ask for the salutation
-        spy_salutation = raw_input("What should we call you Mr or Miss?")
+        spy['salutation'] = raw_input("What should we call you Mr or Miss?")
 
         # Ask for the age of the spy
-        spy_age = raw_input("please enter your age: ")
+        spy['age'] = raw_input("please enter your age: ")
         # raw input always gives a string to typecast age to int.
-        spy_age = int(spy_age)
+        spy['age'] = int(spy['age'])
         # Age cannot be less than 12 and greater than 50
         # nested if
-        if 12 <= spy_age < 50:
+        if 12 <= spy['age'] < 50:
             print("Welcome to Spy community")
 
             # Ask for spy_rating
-            spy_rating = raw_input("Please enter your spy rating: ")
+            spy['rating'] = raw_input("Please enter your spy rating: ")
             # raw input always gives a string to typecast rating to float.
-            spy_rating = float(spy_rating)
+            spy['rating'] = float(spy['rating'])
 
             # conditions to pass comments according to the spy_rating.
-            if spy_rating > 4.5:
+            if spy['rating'] > 4.5:
                 print "Great Ace!"
-            elif 3.5 <= spy_rating <= 4.5:
+            elif 3.5 <= spy['rating'] <= 4.5:
                 print "You are one of the good ones!"
-            elif 2.5 <= spy_rating <= 3.5:
+            elif 2.5 <= spy['rating'] <= 3.5:
                 print "You can always do better."
             else:
                 print "We will get someone to help you."
 
             # Make the spy come online
-            spy_is_online = True
-
-            # after the variable shave been updated authenticate the user.
-            # Authentication Complete
-            # print "Authentication Complete.Welcome %s,age: %d,rating : %.2f.Proud to have you on board." % (
-            # spy_name, spy_age, spy_rating)
+            spy['is_online'] = True
 
             # Call the start_chat function to start(the function will authenticate the user)
-            start_chat(spy_name, spy_age, spy_rating)
-
-        # age is less than 12
-        elif spy_age < 12:
-            print("Sorry , you are too young to become a spy!")
-        # age is greater than equal to 50
-        elif spy_age >= 50:
-            print("Sorry , you are too old to be a spy!")
-
-
+            start_chat(spy)
     else:
         print("Please enter a valid name")
