@@ -1,6 +1,30 @@
-spy = {
-        'name': 'Bond',
-        'salutation': 'Mr.',
-        'age': 24,
-        'rating': 9.8
-    }
+from datetime import datetime
+
+# made a class for spy
+class Spy:
+
+    def __init__(self, name, salutation, age, rating):
+        self.name = name
+        self.salutation = salutation
+        self.age = age
+        self.rating = rating
+        self.is_online = True
+        self.chats = []
+        self.current_status_message = None
+
+# a class for chat_messages
+class ChatMessage:
+
+    def __init__(self, message, sent_by_me):
+        self.message = message
+        self.time = datetime.now()
+        self.sent_by_me = sent_by_me
+
+spy = Spy('Bond', 'Mr.', 24, 8)
+
+friend_one = Spy('Ronaldo', 'Mr.', 27, 6)
+friend_two = Spy('Mario', 'Mr.', 21, 5.39)
+friend_three = Spy('Reus', 'Mr.', 27 , 5.95)
+
+
+friends = [friend_one, friend_two, friend_three]
