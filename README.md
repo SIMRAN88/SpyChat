@@ -13,7 +13,7 @@ pip install virtual_env
 source bin/activate
 pip install steganography
 pip install termcolor
-pip install termcolor
+pip install colorama
 ```
 
 ### Run 
