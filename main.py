@@ -22,7 +22,7 @@ print(colored("Hello!", "blue"))
 print "Let\'s get started!"
 
 # Ask the spy whether he wants to continue with the default spy or create a new user
-question = "Do you want to continue as the default user-" + spy.salutation + " " + spy.name + " or create a new user Y/N ?: "
+question = "Do you want to continue as the default user-" + spy.salutation + " " + spy.name + " or create a new user? (Y/N): "
 existing = raw_input(colored(question, "red"))
 
 
@@ -74,7 +74,7 @@ def add_status():
 
     # When the user chooses neither yes nor no
     else:
-        print 'The option you chose is not valid! Press either y or n.'
+        print 'The option you chose is not valid! Press either Y or N.'
 
     # When the status message is updated
     if updated_status_message:
@@ -114,7 +114,7 @@ def add_friend():
         friends.append(new_friend)
         print(colored('Friend Added!', "cyan"))
     else:
-        print(colored("Sorry , the friend cannot be a spy!", "blue"))
+        print(colored("Sorry, the friend cannot be a spy!", "blue"))
 
     # The no of friends the spy has will be returned.
     return len(friends)
@@ -177,7 +177,7 @@ def send_message_help():
     # Select the friend who had sent the emergency message
     friend_choice = select_a_friend()
     # Send the helping message text to the friend in emergency
-    text = "I am coming to save you. Do not worry "
+    text = "I am coming to save you. Don't worry "
     # The message will be added in the chat
     new_chat = ChatMessage(text, True)
     # Add the message to the one who said.
@@ -240,7 +240,7 @@ def read_a_message():
         # Delete a spy from your list of spies if they are speaking too much
         if len(words) > 100:
             print(colored(friends[sender].name, 'blue')),
-            print(colored("removed from friends list.What a chatter box!.What a drag!!!", "yellow"))
+            print(colored("Removed from friends list. What a chatter box! What a drag!!!", "yellow"))
             # Removes that chatterbox friend
             friends.remove(friends[sender])
 
@@ -336,10 +336,10 @@ def start_chat(spy):
     else:
         # age is less than 12
         if spy.age <= 12:
-            print("Sorry , you are too young to become a spy!")
+            print("Sorry, you are too young to become a spy!")
         # age is greater than equal to 50
         elif spy.age >= 50:
-            print("Sorry , you are too old to be a spy!")
+            print("Sorry, you are too old to be a spy!")
 
 
 # if the user chooses the default spy
@@ -357,7 +357,7 @@ elif existing.upper() == "N":
     # Check if the name is entered or not
     if len(spy.name) > 0 and spy.name.isdigit() == False:
         # ask for the salutation
-        spy.salutation = raw_input("What should we call you Mr. or Ms.?")
+        spy.salutation = raw_input("What should we call you? Mr. or Ms.?")
         # check if salutation is entered or not
         if len(spy.salutation) > 0:
 
@@ -402,10 +402,10 @@ elif existing.upper() == "N":
                 else:
                     # age is less than 12
                     if spy.age <= 12:
-                        print(colored("Sorry , you are too young to become a spy!", 'red'))
+                        print(colored("Sorry, you are too young to become a spy!", 'red'))
                     # age is greater than equal to 50
                     elif spy.age >= 50:
-                        print(colored("Sorry , you are too old to be a spy!", 'red'))
+                        print(colored("Sorry, you are too old to be a spy!", 'red'))
                     else:
                         print(colored("Please enter a valid age", 'red'))
 
