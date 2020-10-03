@@ -4,7 +4,7 @@ The chat app will not be using a database or any other form of persistent data s
 and will rely on the computer's non-persistent memory (RAM).
 ````````````````````````
 Name:SpyChat
-Version:1.0
+Version:1.0.1
 Author Name:Simran Raj
 Author Url:http://www.simranraj.com
 ``````````````````````````
